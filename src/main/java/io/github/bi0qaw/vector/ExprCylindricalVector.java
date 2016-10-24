@@ -10,7 +10,7 @@ import org.bukkit.util.Vector;
 public class ExprCylindricalVector extends SimpleExpression<Vector> {
 
 	private Expression<Number> radius;
-	private Expression<Number> phi;
+	private Expression<Number> yaw;
 	private Expression<Number> height;
 
 	public boolean isSingle() {
@@ -18,7 +18,7 @@ public class ExprCylindricalVector extends SimpleExpression<Vector> {
 	}
 
 	public String toString(Event event, boolean b) {
-		return "cylindrical";
+		return "cylindrical vector with radius " + radius.toString() + ", yaw " + yaw.toString() + " and height " + height.toString();
 	}
 
 	public Class<? extends Vector> getReturnType() {
@@ -28,7 +28,7 @@ public class ExprCylindricalVector extends SimpleExpression<Vector> {
 	@SuppressWarnings("unchecked")
 	public boolean init(Expression<?>[] expressions, int i, Kleenean kleenean, SkriptParser.ParseResult parseResult) {
 		radius = (Expression<Number>) expressions[0];
-		phi = (Expression<Number>) expressions[1];
+		yaw = (Expression<Number>) expressions[1];
 		height = (Expression<Number>) expressions[2];
 		return true;
 	}
@@ -36,12 +36,12 @@ public class ExprCylindricalVector extends SimpleExpression<Vector> {
 	@Override
 	protected Vector[] get(Event event) {
 		Number r = radius.getSingle(event);
-		Number p = phi.getSingle(event);
+		Number y = yaw.getSingle(event);
 		Number h = height.getSingle(event);
-		if (r == null || p == null || h == null) {
+		if (r == null || y == null || h == null) {
 			return null;
 		}
-		return new Vector[]{ VectorMath.fromCylindricalCoordinates(r.doubleValue(), p.doubleValue(), h.doubleValue()) };
+		return new Vector[]{ VectorMath.fromCylindricalCoordinates(r.doubleValue(),VectorMath.fromSkriptYaw(y.floatValue()), h.doubleValue()) };
 	}
 
 }

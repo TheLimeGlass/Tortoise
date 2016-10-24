@@ -49,9 +49,9 @@ public class Turtle implements Runnable {
 	}
 
 	public void rotate(Vector axis, double angle) {
-		u = VectorMath.rot(u, axis, angle);
-		v = VectorMath.rot(v, axis, angle);
-		w = VectorMath.rot(w, axis, angle);
+		u = VectorMath.rot(getU(), axis, angle);
+		v = VectorMath.rot(getV(), axis, angle);
+		w = VectorMath.rot(getW(), axis, angle);
 		matrixIsDirty = true;
 		if (!children.isEmpty()) {
 			for (Turtle c : children){
@@ -63,8 +63,8 @@ public class Turtle implements Runnable {
 	}
 
 	public void rotateU(double u) {
-		this.v = VectorMath.rot(this.v, this.u, u);
-		this.w = VectorMath.rot(this.w, this.u, u);
+		this.v = VectorMath.rot(getV(), getU(), u);
+		this.w = VectorMath.rot(getW(), getU(), u);
 		matrixIsDirty = true;
 		if (!children.isEmpty()) {
 			for (Turtle c : children){
@@ -76,8 +76,8 @@ public class Turtle implements Runnable {
 	}
 
 	public void rotateV(double v) {
-		this.u = VectorMath.rot(this.u, this.v, v);
-		this.w = VectorMath.rot(this.w, this.v, v);
+		this.u = VectorMath.rot(getU(), getV(), v);
+		this.w = VectorMath.rot(getW(), getV(), v);
 		matrixIsDirty = true;
 		if (!children.isEmpty()) {
 			for (Turtle c : children){
@@ -89,8 +89,8 @@ public class Turtle implements Runnable {
 	}
 
 	public void rotateW(double w) {
-		this.u = VectorMath.rot(this.u, this.w, w);
-		this.v = VectorMath.rot(this.v, this.w, w);
+		this.u = VectorMath.rot(getU(), getW(), w);
+		this.v = VectorMath.rot(getV(), getW(), w);
 		matrixIsDirty = true;
 		if (!children.isEmpty()) {
 			for (Turtle c : children){
@@ -103,7 +103,7 @@ public class Turtle implements Runnable {
 
 	public double getYaw() {
 		Float pitch = (float) getPitch();
-		if (pitch.equals(VectorMath.HALF_PI) || pitch.equals(-VectorMath.HALF_PI)) {
+		if (pitch.equals((float) VectorMath.HALF_PI) || pitch.equals((float) -VectorMath.HALF_PI)) {
 			return 0;
 		}
 		return Math.atan2(w.getX(), u.getX());
@@ -115,9 +115,9 @@ public class Turtle implements Runnable {
 
 	public double getRoll() {
 		Float pitch = (float) getPitch();
-		if (pitch.equals(VectorMath.HALF_PI)){
+		if (pitch.equals((float) VectorMath.HALF_PI)){
 			return Math.atan2(u.getZ(), w.getZ());
-		} else if (pitch.equals(-VectorMath.HALF_PI)) {
+		} else if (pitch.equals((float) -VectorMath.HALF_PI)) {
 			return -Math.atan2(u.getZ(), w.getZ());
 		}
 		return Math.atan2(v.getZ(), v.getY());
@@ -144,10 +144,7 @@ public class Turtle implements Runnable {
 	}
 
 	public boolean hasParent() {
-		if (parent != null) {
-			return true;
-		}
-		return false;
+		return parent != null ? true : false;
 	}
 
 	public Function<?> getFunction() {
@@ -175,15 +172,15 @@ public class Turtle implements Runnable {
 	}
 
 	public Vector getU() {
-		return u;
+		return u.clone();
 	}
 
 	public Vector getV() {
-		return v;
+		return v.clone();
 	}
 
 	public Vector getW() {
-		return w;
+		return w.clone();
 	}
 
 	public void moveU(double n) {
@@ -204,8 +201,8 @@ public class Turtle implements Runnable {
 			if (future.equals(this.u)){
 				return;
 			}
-			Vector axis = this.u.getCrossProduct(future);
-			double angle = this.u.angle(future) * VectorMath.RAD_TO_DEG;
+			Vector axis = getU().getCrossProduct(future);
+			double angle = getU().angle(future) * VectorMath.RAD_TO_DEG;
 			this.u = future;
 			this.v = VectorMath.rot(v, axis, angle);
 			this.w = VectorMath.rot(w, axis, angle);
@@ -218,8 +215,8 @@ public class Turtle implements Runnable {
 			if (future.equals(this.v)){
 				return;
 			}
-			Vector axis = this.v.getCrossProduct(future);
-			double angle = this.v.angle(future) * VectorMath.RAD_TO_DEG;
+			Vector axis = getV().getCrossProduct(future);
+			double angle = getV().angle(future) * VectorMath.RAD_TO_DEG;
 			this.v = future;
 			this.u = VectorMath.rot(u, axis, angle);
 			this.w = VectorMath.rot(w, axis, angle);
@@ -233,8 +230,8 @@ public class Turtle implements Runnable {
 			if (future.equals(this.w)){
 				return;
 			}
-			Vector axis = this.w.getCrossProduct(future);
-			double angle = this.w.angle(future) * VectorMath.RAD_TO_DEG;
+			Vector axis = getW().getCrossProduct(future);
+			double angle = getW().angle(future) * VectorMath.RAD_TO_DEG;
 			this.w = future;
 			this.u = VectorMath.rot(u, axis, angle);
 			this.v = VectorMath.rot(v, axis, angle);
@@ -353,9 +350,9 @@ public class Turtle implements Runnable {
 		position = parent.getInverseMatrix().mul(currentPos.subtract(parentPos));
 
 		if (isFollowRotation()){
-			u = parent.getU().clone();
-			v = parent.getV().clone();
-			w = parent.getW().clone();
+			u = parent.getU();
+			v = parent.getV();
+			w = parent.getW();
 			matrixIsDirty = true;
 		}
 		if (hasParent()){

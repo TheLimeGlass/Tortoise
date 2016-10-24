@@ -4,8 +4,6 @@ import org.bukkit.util.Vector;
 
 public class VectorMath {
 
-	private VectorMath() {}
-
 	public static final double PI = Math.PI;
 	public static final double HALF_PI = PI / 2;
 	public static final double DEG_TO_RAD = PI / 180;
@@ -15,9 +13,10 @@ public class VectorMath {
 		double r = Math.abs(radius);
 		double t = theta * DEG_TO_RAD;
 		double p = phi * DEG_TO_RAD;
-		double x = r * Math.sin(t) * Math.cos(p);
-		double z = r * Math.sin(t) * Math.sin(p);
-		double y = r * Math.cos(t);
+		double sinp = Math.sin(p);
+		double x = r * sinp * Math.cos(t);
+		double y = r * Math.cos(p);
+		double z = r * sinp * Math.sin(t);
 		return new Vector(x, y, z);
 	}
 
@@ -39,6 +38,9 @@ public class VectorMath {
 	}
 
 	public static float getYaw(Vector vector) {
+		if (((Double) vector.getX()).equals((double) 0) && ((Double) vector.getZ()).equals((double) 0)){
+			return 0;
+		}
 		return (float) (Math.atan2(vector.getZ(), vector.getX()) * RAD_TO_DEG);
 	}
 
@@ -62,8 +64,9 @@ public class VectorMath {
 		double cos = Math.cos(angle * DEG_TO_RAD);
 		Vector vy = new Vector(0, cos, -sin);
 		Vector vz = new Vector(0, sin, cos);
-		vector.setY(vector.dot(vy));
-		vector.setZ(vector.dot(vz));
+		Vector clone = vector.clone();
+		vector.setY(clone.dot(vy));
+		vector.setZ(clone.dot(vz));
 		return vector;
 	}
 
@@ -72,8 +75,9 @@ public class VectorMath {
 		double cos = Math.cos(angle * DEG_TO_RAD);
 		Vector vx = new Vector(cos, 0, sin);
 		Vector vz = new Vector(-sin, 0, cos);
-		vector.setX(vector.dot(vx));
-		vector.setZ(vector.dot(vz));
+		Vector clone = vector.clone();
+		vector.setX(clone.dot(vx));
+		vector.setZ(clone.dot(vz));
 		return vector;
 	}
 
@@ -82,8 +86,9 @@ public class VectorMath {
 		double cos = Math.cos(angle * DEG_TO_RAD);
 		Vector vx = new Vector(cos, -sin, 0);
 		Vector vy = new Vector(sin, cos, 0);
-		vector.setX(vector.dot(vx));
-		vector.setY(vector.dot(vy));
+		Vector clone = vector.clone();
+		vector.setX(clone.dot(vx));
+		vector.setY(clone.dot(vy));
 		return vector;
 	}
 

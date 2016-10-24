@@ -13,7 +13,7 @@ public class ExprVectorSquaredLength extends SimplePropertyExpression<Vector, Do
 
 	@Override
 	protected String getPropertyName() {
-		return "squared length";
+		return "squared length of vector";
 	}
 
 	public Class<? extends Double> getReturnType() {

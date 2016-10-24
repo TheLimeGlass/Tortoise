@@ -10,7 +10,7 @@ import org.bukkit.util.Vector;
 
 public class ExprVectorXYZ extends SimplePropertyExpression<Vector, Number> {
 
-	private final static char[] axes = {'x', 'y', 'z'};
+	private final static String[] axes = {"xx", "yy", "zz"};
 
 	private int axis;
 

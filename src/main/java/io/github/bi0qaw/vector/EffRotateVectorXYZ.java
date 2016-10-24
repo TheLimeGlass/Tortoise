@@ -9,18 +9,20 @@ import org.bukkit.util.Vector;
 
 public class EffRotateVectorXYZ extends Effect{
 
-	Expression<Vector> vector;
-	Expression<Number> number;
-	int parseMark;
+	private final static Character[] axes = new Character[] {'x', 'y', 'z'};
+
+	private Expression<Vector> vector;
+	private Expression<Number> number;
+	private int mark;
 
 	public String toString(Event event, boolean b) {
-		return "rotate round XYZ";
+		return "rotate " + vector.toString() + " around " + axes[mark] + "-axis";
 	}
 
 	public boolean init(Expression<?>[] expressions, int i, Kleenean kleenean, SkriptParser.ParseResult parseResult) {
 		vector = (Expression<Vector>)expressions[0];
 		number = (Expression<Number>)expressions[1];
-		parseMark = parseResult.mark;
+		mark = parseResult.mark;
 		return true;
 	}
 
@@ -31,7 +33,7 @@ public class EffRotateVectorXYZ extends Effect{
 		if (v == null || n == null){
 			return;
 		}
-		switch (parseMark) {
+		switch (mark) {
 			case 1:
 				VectorMath.rotX(v, n.doubleValue());
 				break;

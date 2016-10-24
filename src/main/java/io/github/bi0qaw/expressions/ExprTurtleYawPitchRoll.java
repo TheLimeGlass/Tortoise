@@ -7,6 +7,11 @@ import ch.njol.skript.lang.SkriptParser;
 import ch.njol.util.Kleenean;
 import io.github.bi0qaw.Turtle;
 
+
+/*
+TODO
+This is currently not supported and broken.
+ */
 public class ExprTurtleYawPitchRoll extends SimplePropertyExpression<Turtle, Number> {
 
 	private int axis;

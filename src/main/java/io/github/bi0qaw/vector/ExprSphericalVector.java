@@ -10,15 +10,15 @@ import org.bukkit.util.Vector;
 public class ExprSphericalVector extends SimpleExpression<Vector> {
 
 	private Expression<Number> radius;
-	private Expression<Number> theta;
-	private Expression<Number> phi;
+	private Expression<Number> yaw;
+	private Expression<Number> pitch;
 
 	public boolean isSingle() {
 		return true;
 	}
 
 	public String toString(Event event, boolean b) {
-		return "spherical";
+		return "spherical vector with radius " + radius.toString() + ", yaw " + yaw.toString() + ", pitch" + pitch.toString();
 	}
 
 	public Class<? extends Vector> getReturnType() {
@@ -28,32 +28,19 @@ public class ExprSphericalVector extends SimpleExpression<Vector> {
 	@SuppressWarnings("unchecked")
 	public boolean init(Expression<?>[] expressions, int i, Kleenean kleenean, SkriptParser.ParseResult parseResult) {
 		radius = (Expression<Number>) expressions[0];
-		theta = (Expression<Number>) expressions[1];
-		phi = (Expression<Number>) expressions[2];
+		yaw = (Expression<Number>) expressions[1];
+		pitch = (Expression<Number>) expressions[2];
 		return true;
 	}
 
 	@Override
 	protected Vector[] get(Event event) {
 		Number r = radius.getSingle(event);
-		Number t = theta.getSingle(event);
-		Number p = phi.getSingle(event);
-		if (r == null || t == null || p == null) {
+		Number y = yaw.getSingle(event);
+		Number p = pitch.getSingle(event);
+		if (r == null || y == null || p == null) {
 			return null;
 		}
-		return new Vector[]{fromSphericalCoordinates(r.doubleValue(), t.doubleValue(), p.doubleValue())};
-	}
-
-	private static final double PI = Math.PI;
-	private static final double DEG_TO_RAD = PI / 180;
-
-	private Vector fromSphericalCoordinates(double radius, double theta, double phi) {
-		double r = Math.abs(radius);
-		double t = theta * DEG_TO_RAD;
-		double p = phi * DEG_TO_RAD;
-		double x = r * Math.sin(t) * Math.cos(p);
-		double z = r * Math.sin(t) * Math.sin(p);
-		double y = r * Math.cos(t);
-		return new Vector(x, y, z);
+		return new Vector[]{ VectorMath.fromSphericalCoordinates(r.doubleValue(), VectorMath.fromSkriptYaw(y.floatValue()), p.floatValue() + 90)};
 	}
 }

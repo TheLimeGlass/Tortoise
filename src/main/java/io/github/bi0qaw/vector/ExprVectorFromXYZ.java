@@ -31,7 +31,7 @@ public class ExprVectorFromXYZ extends SimpleExpression<Vector> {
 	}
 
 	public String toString(Event event, boolean b) {
-		return "from x, y, z";
+		return "vector from x " + x.toString() + ", y " + y.toString() + ", z " + z.toString();
 	}
 
 	public boolean init(Expression<?>[] expressions, int i, Kleenean kleenean, SkriptParser.ParseResult parseResult) {

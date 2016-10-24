@@ -3,54 +3,98 @@ package io.github.bi0qaw.vector;
 import ch.njol.skript.lang.Expression;
 import ch.njol.skript.lang.SkriptParser;
 import ch.njol.skript.lang.util.SimpleExpression;
+import ch.njol.skript.util.Patterns;
 import ch.njol.util.Kleenean;
 import org.bukkit.event.Event;
 import org.bukkit.util.Vector;
 
+import java.lang.reflect.Array;
+
 public class ExprVectorArithmetic extends SimpleExpression<Vector> {
 
-	private Expression<Vector> vector1;
-	private Expression<Vector> vector2;
-	private int parseMark;
+	private static enum Operator {
+		PLUS("++") {
+			@SuppressWarnings("null")
+			public Vector calculate(final Vector v1, final Vector v2) {
+				return v1.clone().add(v2);
+			}
+		},
+		MINUS("--") {
+			@SuppressWarnings("null")
+			public Vector calculate(final Vector v1, final Vector v2) {
+				return v1.clone().subtract(v2);
+			}
+		},
+		MULT("**") {
+			@SuppressWarnings("null")
+			public Vector calculate(final Vector v1, final Vector v2) {
+				return v1.clone().multiply(v2);
+			}
+		},
+		DIV("//") {
+			@SuppressWarnings("null")
+			public Vector calculate(final Vector v1, final Vector v2) {
+				return v1.clone().divide(v2);
+			}
+		};
 
-	public Class<? extends Vector> getReturnType() {
-		return Vector.class;
+		public final String sign;
+
+		private Operator(final String sign) {
+			this.sign = sign;
+		}
+
+		public abstract Vector calculate(Vector v1, Vector v2);
+
+		@Override
+		public String toString() {
+			return sign;
+		}
 	}
 
-	public boolean init(Expression<?>[] expressions, int i, Kleenean kleenean, SkriptParser.ParseResult parseResult) {
-		vector1 = (Expression<Vector>) expressions[0];
-		vector2 = (Expression<Vector>) expressions[1];
-		parseMark = parseResult.mark;
-		return true;
-	}
+
+	protected final static Patterns<Operator> patterns = new Patterns<Operator>(new Object[][] {
+
+			{"%vector%[ ]++[ ]%vector%", Operator.PLUS},
+			{"%vector%[ ]--[ ]%vector%", Operator.MINUS},
+
+			{"%vector%[ ]**[ ]%vector%", Operator.MULT},
+			{"%vector%[ ]//[ ]%vector%", Operator.DIV},
+	});
+
+	private Expression<Vector> first, second;
+	private Operator op;
 
 	@Override
-	public Vector[] get(Event event) {
-		Vector v1 = vector1.getSingle(event);
-		Vector v2 = vector2.getSingle(event);
-		if (v1 == null || v2 == null) {
-			return null;
+	protected Vector[] get(Event event) {
+		final Vector[] vectors = (Vector[]) Array.newInstance(Vector.class, 1);
+		Vector v1 = first.getSingle(event), v2 = second.getSingle(event);
+		if (v1 == null) {
+			v1 = new Vector();
 		}
-		v1 = vector1.getSingle(event).clone();
-		v2 = vector2.getSingle(event).clone();
-		switch (parseMark) {
-			case 1:
-				return new Vector[]{v1.add(v2)};
-			case 2:
-				return new Vector[]{v1.add(v2.multiply(-1))};
-			case 3:
-				return new Vector[]{v1.multiply(v2)};
-			case 4:
-				return new Vector[]{v1.divide(v2)};
+		if (v2 == null) {
+			v2 = new Vector();
 		}
-		return null;
+		vectors[0] = op.calculate(v1, v2);
+		return vectors;
 	}
 
 	public boolean isSingle() {
 		return true;
 	}
 
+	public Class<? extends Vector> getReturnType() {
+		return Vector.class;
+	}
+
 	public String toString(Event event, boolean b) {
-		return "arithmetic";
+		return first.toString(event, b) + " " + op +  " " + second.toString(event, b);
+	}
+
+	public boolean init(Expression<?>[] expressions, int matchedPattern, Kleenean kleenean, SkriptParser.ParseResult parseResult) {
+		first = (Expression<Vector>) expressions[0];
+		second = (Expression<Vector>) expressions[1];
+		op = patterns.getInfo(matchedPattern);
+		return true;
 	}
 }

@@ -9,25 +9,25 @@ import org.bukkit.util.Vector;
 
 public class EffRotateVectorAroundAnother extends Effect{
 
-	Expression<Vector> vector1;
-	Expression<Vector> vector2;
-	Expression<Number> number;
+	private Expression<Vector> first;
+	private Expression<Vector> second;
+	private Expression<Number> number;
 
 	public String toString(Event event, boolean b) {
-		return "rotate around another";
+		return "rotate " + first.toString() + " around " + second.toString();
 	}
 
 	public boolean init(Expression<?>[] expressions, int i, Kleenean kleenean, SkriptParser.ParseResult parseResult) {
-		vector1 = (Expression<Vector>)expressions[0];
-		vector2 = (Expression<Vector>)expressions[1];
+		first = (Expression<Vector>)expressions[0];
+		second = (Expression<Vector>)expressions[1];
 		number = (Expression<Number>)expressions[2];
 		return true;
 	}
 
 	@Override
 	protected void execute(Event event) {
-		Vector v1 = vector1.getSingle(event);
-		Vector v2 = vector2.getSingle(event);
+		Vector v1 = first.getSingle(event);
+		Vector v2 = second.getSingle(event);
 		Number n = number.getSingle(event);
 		if (v1 == null || v2 == null || n == null ){
 			return;

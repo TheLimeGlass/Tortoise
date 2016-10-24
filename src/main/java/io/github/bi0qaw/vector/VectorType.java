@@ -1,6 +1,7 @@
 package io.github.bi0qaw.vector;
 
 import ch.njol.skript.Skript;
+import ch.njol.skript.classes.Arithmetic;
 import ch.njol.skript.classes.ClassInfo;
 import ch.njol.skript.classes.Parser;
 import ch.njol.skript.classes.Serializer;
@@ -90,6 +91,7 @@ public class VectorType {
 						return false;
 					}
 				})
+				.math(Vector.class, new VectorArithmethic())
 		);
 	}
 }

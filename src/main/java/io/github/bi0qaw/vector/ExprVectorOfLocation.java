@@ -35,6 +35,6 @@ public class ExprVectorOfLocation extends SimpleExpression<Vector> {
 	}
 
 	public String toString(Event event, boolean b) {
-		return "vector of location";
+		return "vector of location " + location.toString();
 	}
 }

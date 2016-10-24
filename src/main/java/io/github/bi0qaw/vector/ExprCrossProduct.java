@@ -9,15 +9,15 @@ import org.bukkit.util.Vector;
 
 public class ExprCrossProduct extends SimpleExpression<Vector> {
 
-	private Expression<Vector> vector1;
-	private Expression<Vector> vector2;
+	private Expression<Vector> first;
+	private Expression<Vector> second;
 
 	public boolean isSingle() {
 		return true;
 	}
 
 	public String toString(Event event, boolean b) {
-		return "cross product";
+		return  first.toString() + " cross " + second.toString();
 	}
 
 	public Class<? extends Vector> getReturnType() {
@@ -25,15 +25,15 @@ public class ExprCrossProduct extends SimpleExpression<Vector> {
 	}
 
 	public boolean init(Expression<?>[] expressions, int i, Kleenean kleenean, SkriptParser.ParseResult parseResult) {
-		vector1 = (Expression<Vector>)expressions[0];
-		vector2 = (Expression<Vector>)expressions[1];
+		first = (Expression<Vector>)expressions[0];
+		second = (Expression<Vector>)expressions[1];
 		return true;
 	}
 
 	@Override
 	protected Vector[] get(Event event) {
-		Vector v1 = vector1.getSingle(event);
-		Vector v2 = vector2.getSingle(event);
+		Vector v1 = first.getSingle(event);
+		Vector v2 = second.getSingle(event);
 		if (v1 == null || v2 == null) {
 			return null;
 		}

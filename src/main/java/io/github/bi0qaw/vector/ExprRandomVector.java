@@ -23,7 +23,7 @@ public class ExprRandomVector extends SimpleExpression<Vector> {
 	}
 
 	public String toString(Event event, boolean b) {
-		return "random";
+		return "random vector";
 	}
 
 	public boolean init(Expression<?>[] expressions, int i, Kleenean kleenean, SkriptParser.ParseResult parseResult) {

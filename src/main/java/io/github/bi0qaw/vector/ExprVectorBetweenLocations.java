@@ -10,15 +10,15 @@ import org.bukkit.util.Vector;
 
 public class ExprVectorBetweenLocations extends SimpleExpression<Vector> {
 
-	private Expression<Location> location1;
-	private Expression<Location> location2;
+	private Expression<Location> from;
+	private Expression<Location> to;
 
 	public boolean isSingle() {
 		return true;
 	}
 
 	public String toString(Event event, boolean b) {
-		return "between locations";
+		return "vector from " + from.toString() + " to " + to.toString();
 	}
 
 	public Class<? extends Vector> getReturnType() {
@@ -26,15 +26,15 @@ public class ExprVectorBetweenLocations extends SimpleExpression<Vector> {
 	}
 
 	public boolean init(Expression<?>[] expressions, int i, Kleenean kleenean, SkriptParser.ParseResult parseResult) {
-		location1 = (Expression<Location>)expressions[0];
-		location2 = (Expression<Location>)expressions[1];
+		from = (Expression<Location>)expressions[0];
+		to = (Expression<Location>)expressions[1];
 		return true;
 	}
 
 	@Override
 	protected Vector[] get(Event event) {
-		Location l1 = location1.getSingle(event);
-		Location l2 = location2.getSingle(event);
+		Location l1 = from.getSingle(event);
+		Location l2 = to.getSingle(event);
 		if (l1 == null || l2 == null){
 			return null;
 		}

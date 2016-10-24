@@ -15,6 +15,7 @@ public class ExprLocationFromVector extends SimpleExpression<Location> {
 	private Expression<World> world;
 	private Expression<Number> yaw;
 	private Expression<Number> pitch;
+	private boolean yawpitch;
 
 	public boolean isSingle() {
 		return true;
@@ -25,10 +26,15 @@ public class ExprLocationFromVector extends SimpleExpression<Location> {
 	}
 
 	public boolean init(Expression<?>[] expressions, int i, Kleenean kleenean, SkriptParser.ParseResult parseResult) {
+		if (expressions.length > 3) {
+			yawpitch = true;
+		}
 		vector = (Expression<Vector>)expressions[0];
 		world = (Expression<World>)expressions[1];
-		yaw = (Expression<Number>)expressions[2];
-		pitch = (Expression<Number>)expressions[3];
+		if (yawpitch) {
+			yaw = (Expression<Number>)expressions[2];
+			pitch = (Expression<Number>)expressions[3];
+		}
 		return true;
 	}
 
@@ -36,8 +42,8 @@ public class ExprLocationFromVector extends SimpleExpression<Location> {
 	protected Location[] get(Event event) {
 		Vector v = vector.getSingle(event);
 		World w = world.getSingle(event);
-		Number y = yaw.getSingle(event);
-		Number p = pitch.getSingle(event);
+		Number y = yaw != null ? yaw.getSingle(event) : null;
+		Number p = pitch != null ? pitch.getSingle(event) : null;
 		if (v == null || w == null){
 			return null;
 		}
@@ -50,6 +56,9 @@ public class ExprLocationFromVector extends SimpleExpression<Location> {
 	}
 
 	public String toString(Event event, boolean b) {
-		return "location from vector";
+		if (yawpitch) {
+			return "location from " + vector.toString() + " with yaw " + yaw.toString() + " and pitch " + pitch.toString();
+		}
+		return "location from " + vector.toString();
 	}
 }

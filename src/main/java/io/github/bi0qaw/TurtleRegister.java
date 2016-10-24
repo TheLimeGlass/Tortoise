@@ -1,7 +1,9 @@
 package io.github.bi0qaw;
 
 import ch.njol.skript.Skript;
+import ch.njol.skript.classes.Converter;
 import ch.njol.skript.lang.ExpressionType;
+import ch.njol.skript.registrations.Converters;
 import io.github.bi0qaw.effects.*;
 import io.github.bi0qaw.expressions.*;
 import org.bukkit.Location;
@@ -36,8 +38,16 @@ public class TurtleRegister {
 		Skript.registerExpression(ExprTurtleHeartbeat.class, Number.class, ExpressionType.PROPERTY, "heartbeat of %turtle%", "%turtle%['s] heartbeat");
 		Skript.registerExpression(ExprTurtleId.class, String.class, ExpressionType.PROPERTY, "id of %turtle%", "%turtle%['s] id");
 		Skript.registerExpression(ExprTurtleIsFamily.class, Boolean.class, ExpressionType.SIMPLE, "%turtle% is (0¦parent|1¦child|2¦descendant) of %turtle%");
-		Skript.registerExpression(ExprTurtleLocation.class, Location.class, ExpressionType.PROPERTY, "location (of|at) %turtle%", "%turtle%['s] location");
-		Skript.registerExpression(ExprTurtleName.class, String.class, ExpressionType.PROPERTY, "name of %turtle%", "%turtle%['s] name");
+		//Skript.registerExpression(ExprTurtleLocation.class, Location.class, ExpressionType.PROPERTY, "turtle location (of|at) %turtle%", "%turtle%['s] location");
+		Skript.registerExpression(ExprTurtleName.class, String.class, ExpressionType.PROPERTY, "turtle name of %turtle%", "%turtle%['s] turtle name");
 		Skript.registerExpression(ExprTurtleParent.class, Turtle.class, ExpressionType.PROPERTY, "parent of %turtle%", "%turtle%['s] parent");
+
+		// Converter
+		Converters.registerConverter(Turtle.class, Location.class, new Converter<Turtle, Location>() {
+			public Location convert(Turtle turtle) {
+				return turtle.getLocation();
+			}
+		});
+
 	}
 }

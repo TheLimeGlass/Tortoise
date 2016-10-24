@@ -16,7 +16,7 @@ public class ExprVectorNormalize extends SimpleExpression<Vector> {
 	}
 
 	public String toString(Event event, boolean b) {
-		return "normalize";
+		return "normalized " + vector.toString();
 	}
 
 	public Class<? extends Vector> getReturnType() {

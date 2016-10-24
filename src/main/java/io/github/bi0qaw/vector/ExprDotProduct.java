@@ -9,15 +9,15 @@ import org.bukkit.util.Vector;
 
 public class ExprDotProduct extends SimpleExpression<Double> {
 
-	private Expression<Vector> vector1;
-	private Expression<Vector> vector2;
+	private Expression<Vector> first;
+	private Expression<Vector> second;
 
 	public boolean isSingle() {
 		return true;
 	}
 
 	public String toString(Event event, boolean b) {
-		return "dot product";
+		return first.toString() + " dot " + second.toString();
 	}
 
 	public Class<? extends Double> getReturnType() {
@@ -25,18 +25,18 @@ public class ExprDotProduct extends SimpleExpression<Double> {
 	}
 
 	public boolean init(Expression<?>[] expressions, int i, Kleenean kleenean, SkriptParser.ParseResult parseResult) {
-		vector1 = (Expression<Vector>)expressions[0];
-		vector2 = (Expression<Vector>)expressions[1];
+		first = (Expression<Vector>)expressions[0];
+		second = (Expression<Vector>)expressions[1];
 		return true;
 	}
 
 	@Override
 	protected Double[] get(Event event) {
-		Vector v1 = vector1.getSingle(event);
-		Vector v2 = vector2.getSingle(event);
+		Vector v1 = first.getSingle(event);
+		Vector v2 = second.getSingle(event);
 		if (v1 == null || v2 == null) {
 			return null;
 		}
-		return new Double[]{ v1.dot(v2)};
+		return new Double[]{ v1.getX() * v2.getX() + v1.getY() * v2.getY() + v1.getZ() * v2.getZ()};
 	}
 }

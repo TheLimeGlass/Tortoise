@@ -8,7 +8,7 @@ import ch.njol.skript.registrations.Classes;
 
 public class TurtleType {
 
-	public TurtleType(){};
+	public TurtleType(){}
 
 	static {
 		Classes.registerClass(new ClassInfo<Turtle>(Turtle.class, "turtle")
@@ -27,12 +27,12 @@ public class TurtleType {
 
 				@Override
 				public String toVariableNameString(Turtle turtle) {
-					return "turtle:" + turtle.getId();
+					return turtle.getId().toString();
 				}
 
 				@Override
 				public String getVariableNamePattern() {
-					return "turtle:[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}";
+					return "[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}";
 				}
 			}));
 	}

@@ -15,7 +15,7 @@ public class ExprVectorLength extends SimplePropertyExpression<Vector, Double> {
 
 	@Override
 	protected String getPropertyName() {
-		return "length";
+		return "length of vector";
 	}
 
 	public Class<? extends Double> getReturnType() {
