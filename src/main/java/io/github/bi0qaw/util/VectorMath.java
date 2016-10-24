@@ -1,4 +1,4 @@
-package io.github.bi0qaw.vector;
+package io.github.bi0qaw.util;
 
 import org.bukkit.util.Vector;
 

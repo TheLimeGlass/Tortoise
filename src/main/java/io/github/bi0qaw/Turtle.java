@@ -2,7 +2,7 @@ package io.github.bi0qaw;
 
 import ch.njol.skript.lang.function.Function;
 import io.github.bi0qaw.util.Matrix3;
-import io.github.bi0qaw.vector.VectorMath;
+import io.github.bi0qaw.util.VectorMath;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.util.Vector;
