@@ -61,6 +61,7 @@ turtle name of %turtle%
 %turtle%['s] turtle name
 location (of|at) %turtle%
 %turtle%['s] location
+location %vectors% from %turtle%
 location %number%,[ ]%number%, [ ]%number% from %turtle%
 (forward|backward|upward|downward|right[ward]|left[ward])(-| )axis of %turtle%
 %turtle% follows rotation of parent
