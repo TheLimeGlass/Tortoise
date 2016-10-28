@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.UUID;
 
 
-public class Turtle implements Runnable {
+public class Turtle implements Runnable, Cloneable {
 
 	private final UUID id = UUID.randomUUID();
 	private Vector position = new Vector(0,0,0);
@@ -280,9 +280,9 @@ public class Turtle implements Runnable {
 
 	public Vector getPosition(double u, double v, double w) {
 		Vector p = getPosition().clone();
-		p.add(getU().clone().multiply(u));
-		p.add(getV().clone().multiply(v));
-		p.add(getW().clone().multiply(w));
+		p.add(getU().multiply(u));
+		p.add(getV().multiply(v));
+		p.add(getW().multiply(w));
 		return p;
 	}
 
@@ -471,5 +471,24 @@ public class Turtle implements Runnable {
 		if (function != null) {
 			function.execute(parameters);
 		}
+	}
+
+	@Override
+	public Turtle clone() {
+		Turtle turtle = new Turtle(getLocation());
+		turtle.u = getU();
+		turtle.v = getV();
+		turtle.w = getW();
+		if (hasParent()) {
+			turtle.setParent(getParent());
+		}
+		for (Turtle c : getChildren()) {
+			turtle.addChild(c);
+		}
+		turtle.matrixIsDirty = true;
+		turtle.name = new String(getName());
+		turtle.heartbeat = getHeartbeat();
+		turtle.followRotation = isFollowRotation();
+		return turtle;
 	}
 }

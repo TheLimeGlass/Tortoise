@@ -28,6 +28,8 @@ public class TurtleRegister {
 
 		// Expressions
 		Skript.registerExpression(ExprAllTurtles.class, Turtle.class, ExpressionType.SIMPLE, "all turtles");
+		Skript.registerExpression(ExprCloneTurtle.class, Turtle.class, ExpressionType.SIMPLE, "clone [of] %turtle%");
+		Skript.registerExpression(ExprLocationVectorFromTurtle.class, Location.class, ExpressionType.SIMPLE, "location %vectors% from %turtle%");
 		Skript.registerExpression(ExprLocationXYZFromTurtle.class, Location.class, ExpressionType.SIMPLE, "location %number%,[ ]%number%, [ ]%number% from %turtle%");
 		Skript.registerExpression(ExprNewTurtle.class, Turtle.class, ExpressionType.SIMPLE, "new turtle at %location%");
 		Skript.registerExpression(ExprTurtleAxis.class, Vector.class, ExpressionType.PROPERTY,
