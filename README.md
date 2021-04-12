@@ -10,7 +10,7 @@ clone [of] %turtle%
 
 Removing a turtle:
 ```
-remove %turtles%
+remove (0帆1安ith childern|2安ith descendants) %turtles%
 ```
 
 Turtle ID:
@@ -51,7 +51,7 @@ set function of %turtles% to %function%
 (run|execute) function of %turtles%
 (run|execute) %turtles%['s] function
 release %turtles% [with (children|descendants)]
-stop %turtles%
+stop (0帆1安ith childern|2安ith descendants) %turtles%
 heartbeat of %turtle%
 ```
 

@@ -6,7 +6,7 @@
 
     <groupId>io.github.bi0qaw</groupId>
     <artifactId>tortoise</artifactId>
-    <version>1.0</version>
+    <version>2.0</version>
 
 
     <repositories>
@@ -15,8 +15,20 @@
             <url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
         </repository>
         <repository>
-            <id>Repo-With-Skript</id>
-            <url>http://umbaska.nicofisi.me/beta-maven-repo</url>
+            <id>jitpack</id>
+            <url>https://jitpack.io</url>
+        </repository>
+        <repository>
+            <id>codemc</id>
+            <url>https://ci.emc.gs/nexus/content/groups/aikar/</url>
+        </repository>
+        <repository>
+            <id>paper</id>
+            <url>https://papermc.io/repo/repository/maven-public/</url>
+        </repository>
+        <repository>
+            <id>bungee</id>
+            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
         </repository>
     </repositories>
 
@@ -25,14 +37,14 @@
         <dependency>
             <groupId>org.spigotmc</groupId>
             <artifactId>spigot-api</artifactId>
-            <version>1.10-R0.1-SNAPSHOT</version>
+            <version>1.16.5-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
         <!--Skript-->
         <dependency>
-            <groupId>ch.njol</groupId>
+            <groupId>com.github.SkriptLang</groupId>
             <artifactId>Skript</artifactId>
-            <version>2.2-dev20</version>
+            <version>2.5.3</version>
         </dependency>
     </dependencies>
 

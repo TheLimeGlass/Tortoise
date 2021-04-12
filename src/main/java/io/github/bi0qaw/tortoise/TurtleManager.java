@@ -4,11 +4,12 @@ import org.bukkit.Bukkit;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
 public class TurtleManager {
 
-	private final static HashMap<UUID, Turtle> turtles = new HashMap<UUID, Turtle>();
+	private final static Map<UUID, Turtle> turtles = new HashMap<>();
 
 	public static void register(Turtle turtle) {
 		turtles.put(turtle.getId(), turtle);
@@ -21,7 +22,7 @@ public class TurtleManager {
 	public static void release(Turtle turtle) {
 		if (!turtle.isFree() && turtle.getHeartbeat() > 0) {
 			turtle.setIsFree(true);
-			final int task = Bukkit.getServer().getScheduler().runTaskTimer(Tortoise.getPlugin(),
+			final int task = Bukkit.getServer().getScheduler().runTaskTimer(Tortoise.getInstance(),
 					turtle, 0, turtle.getHeartbeat()).getTaskId();
 			turtle.setTask(task);
 		}

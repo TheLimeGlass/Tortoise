@@ -367,7 +367,7 @@ public class Turtle implements Runnable, Cloneable {
 		}
 	}
 
-	public void removeParent(){
+	public void removeParent() {
 		position = getPosition();
 		parent = null;
 	}
